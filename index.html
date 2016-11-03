@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>The Crypto Ticker</title>
+        <script src="js/autobahn.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="js/currencyPairObj.js"></script>
+        <script src="js/msgRouter.js"></script>
+        <script src="js/engine.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/flexboxgrid.min.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body>
+        <div class="header">
+            <h1>The Crypto Ticker</h1>
+            <div class="link">
+                <a href="#">Learn more about this project</a>
+            </div>
+        </div>
+
+        <div class="main-container">
+            <div class="row" id="appendPairs">
+
+                <!-- currency cards appended here -->
+
+                <!-- Add new currency pair card -->
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" id="addNew">
+                    <div class="addNew">
+                        <div class="half">
+                            <select id="selectMenu">
+
+                            </select>
+                        </div>
+                        <div class="half">
+                            <div id="addNext">
+                                <div class="lowerMe">
+                                    + Add Currency w/ Next Highest 24hr Vol
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>
