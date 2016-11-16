@@ -3,6 +3,7 @@ $dp4-shadow:  0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px
 $dp8-shadow:  0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12),0 5px 5px -3px rgba(0,0,0,.2);
 $font-stack: 'Montseratt', sans-serif;
 $bg-color: #0bb634;
+$bg-img: url('../img/cubes.png');
 
 div {
     box-sizing: border-box;
@@ -11,7 +12,7 @@ body {
     margin: 0;
     padding: 0;
     background: $bg-color;
-    background-image: url('../img/cubes.png');
+    background-image: $bg-img;
     background-attachment: fixed;
     font-family: $font-stack;
     box-sizing: border-box;
@@ -23,8 +24,60 @@ a {
     opacity: 0.8;
     transition: 0.15s ease;
 }
+a:hover {
+    opacity: 1;
+}
 .no-show {
     opacity: 0;
+}
+
+.splash-screen {
+    position: fixed;
+    z-index: 10000;
+    background: $bg-color;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    transition: 1.5s ease;
+
+    /* CSS for loading animation */
+    /* Modified from: https://github.com/tobiasahlin/SpinKit */
+    .spinner {
+      width: 40px;
+      height: 40px;
+      background-color: #fff;
+      transition: 1s ease;
+      margin: 100px auto;
+      animation: sk-rotateplane 1.2s infinite ease-in-out;
+    }
+    @keyframes sk-rotateplane {
+      0% {
+        transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+        -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
+      } 50% {
+        transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+        -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg)
+      } 100% {
+        transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+        -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+      }
+    }
+}
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    99% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+.fade-out {
+    animation: fadeOut 1.5s ease-out;
+    animation-fill-mode: forwards;
 }
 .header {
     padding-top: 18px;
@@ -63,7 +116,61 @@ a {
         font-size: 18px;
         padding: 10px 15px 10px 15px;
     }
+    .select-base {
+        width: 300px;
+        margin: auto;
+        margin-top: 10px;
+        text-align: center;
+        font-size: 16px;
 
+        #btc-price {
+            font-size: 18px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 10px;
+        }
+        table {
+            background: $bg-color;
+            width: 100%;
+            border: 1px solid #fff;
+            border-radius: 15px;
+            border-spacing: 0px;
+            box-shadow: $dp2-shadow;
+        }
+        tr {
+            margin: 0px;
+        }
+        td {
+            width: 50%;
+            padding: 10px 0px 10px 0px;
+            cursor: pointer;
+            transition: 0.15s ease;
+            color: rgba(255,255,255,0.8);
+        }
+        td:nth-of-type(1) {
+            border-right: 1px dashed #fff;
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+        }
+        td:nth-of-type(2) {
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+        td:hover {
+            background: rgba(0,0,0,0.06);
+            color: rgba(255,255,255,0.9);
+        }
+        .current {
+            background: rgba(0,0,0,0.12) !important;
+            color: rgba(255,255,255,1) !important;
+        }
+    }
+    .current-price {
+        font-size: 16px;
+        background: $bg-color;
+        padding: 10px;
+        border-radius: 15px;
+        border: 1px solid #fff;
+    }
 }
 
 .main-container {
@@ -92,7 +199,7 @@ a {
     select {
         height: 100%;
         width: 100%;
-        padding: 0px 0px 0px 140px;
+        padding: 0px 0px 0px 115px;
         font-size: 18px;
         font-family: $font-stack;
         color: rgba(255,255,255,0.8);
@@ -196,6 +303,7 @@ a {
     background: #fff;
     box-shadow: $dp2-shadow;
     text-align: center;
+    overflow: hidden;
 
     .label {
         font-size: 14px;
@@ -246,13 +354,29 @@ a {
     .bidask.bid {
         float: right;
     }
+    .add-to-tab {
+        font-size: 14px;
+        color: #919191;
+        padding: 10px 5px 10px 5px;
+        margin-top: 16px;
+        border-radius: 7px;
+        background: rgba(0,0,0,0.06);
+        transition: 0.15s ease;
+        cursor: pointer;
+    }
+    .add-to-tab:hover {
+        background: rgba(0,0,0,0.12);
+        color: #757575;
+    }
+    .add-to-tab:active {
+        background: rgba(0,0,0,0.16);
+    }
 }
 .col-lg-6 {
     margin-bottom: 85px;
     /*min-width: 516px !important;
     max-width: 516px !important;*/
 }
-
 
 /* Media Queries */
 
@@ -333,7 +457,7 @@ a {
     animation-name: negativePrice;
 }
 .triggerTradePop {
-    animation-duration: 1.5s;
+    animation-duration: 1.2s;
     animation-name: tradePop;
 }
 @keyframes positivePrice {
@@ -343,11 +467,11 @@ a {
     }
     10% {
         color: $bg-color;
-        transform: translate3d(0, -3px, 0);
+        transform: translate3d(0, -3px, 0) scale(1.02);
     }
     100% {
         color: inherit;
-        transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0) scale(1);
     }
 }
 @keyframes negativePrice {
@@ -357,11 +481,11 @@ a {
     }
     10% {
         color: #b60b38;
-        transform: translate3d(0, 3px, 0);
+        transform: translate3d(0, 3px, 0) scale(0.98);
     }
     100% {
         color: inherit;
-        transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0) scale(1);
     }
 }
 @keyframes tradePop {
@@ -370,6 +494,6 @@ a {
     }
     100% {
         opacity: 0;
-        transform: translate3d(0, -50px, 0px);
+        transform: translate3d(0, -50px, 0px) scale(0.8);
     }
 }

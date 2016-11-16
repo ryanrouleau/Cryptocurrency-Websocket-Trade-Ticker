@@ -7,18 +7,42 @@
         <script src="js/currencyPairObj.js"></script>
         <script src="js/msgRouter.js"></script>
         <script src="js/engine.js"></script>
-        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
         <link rel="stylesheet" href="css/style.css" />
         <link rel="stylesheet" href="css/flexboxgrid.min.css" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
     </head>
 
     <body>
+        <div id="splash" class="splash-screen">
+            <div class="header">
+                <h1>The Crypto Ticker</h1>
+                <!-- Loading animation -->
+                <!-- Code from: https://github.com/tobiasahlin/SpinKit -->
+                <div class="spinner"></div>
+
+                <div id="loading-text">
+                    Connecting to <a target="_blank" href="https://poloniex.com">Poloniex Cryptocurrency Exchange</a>
+                </div>
+            </div>
+        </div>
         <div class="header">
             <h1>The Crypto Ticker</h1>
-            <div class="link">
-                <a href="#">Learn more about this project</a>
+            <div class="select-base">
+                <div id="btc-price">
+
+                </div>
+                <table>
+                    <tr>
+                        <td class="current" id="btc">
+                            Bitcoin
+                        </td>
+                        <td id="usd">
+                            US Dollar
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
 
@@ -27,7 +51,7 @@
 
                 <!-- currency cards appended here -->
 
-                <!-- Add new currency pair card -->
+                <!-- Add New Currency UI card -->
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" id="addNew">
                     <div class="addNew">
                         <div class="half">
@@ -44,6 +68,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="title">
+                <a href="#">Learn more about this project</a>
             </div>
         </div>
     </body>
