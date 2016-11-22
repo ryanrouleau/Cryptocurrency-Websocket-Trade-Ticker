@@ -35,6 +35,16 @@ var msgRouter = function() {
 
     // BTC price in USD
     this.btcPrice = 0;
+
+    // Keeping track of # of currency updates
+    this.numUpdates = 0;
+    this.numUpdatesEl = document.getElementById('num-updates');
+
+    // Disable splash screen
+    this.disableSplash = false;
+    if (this.disableSplash) {
+        removeSplashScreen();
+    }
 }
 
 
@@ -176,6 +186,10 @@ msgRouter.prototype.updatePair = function(msg) {
             found = true;
         }
         i++;
+    }
+    if (found) {
+        this.numUpdates++;
+        this.numUpdatesEl.innerHTML = this.numUpdates;
     }
 }
 

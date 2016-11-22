@@ -1,7 +1,7 @@
 $dp2-shadow:  0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
 $dp4-shadow:  0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2);
 $dp8-shadow:  0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12),0 5px 5px -3px rgba(0,0,0,.2);
-$font-stack: 'Montseratt', sans-serif;
+$font-stack: sans-serif;
 $bg-color: #0bb634;
 $bg-img: url('../img/cubes.png');
 
@@ -31,6 +31,8 @@ a:hover {
     opacity: 0;
 }
 
+/* Splash screen */
+
 .splash-screen {
     position: fixed;
     z-index: 10000;
@@ -39,6 +41,7 @@ a:hover {
     height: 100%;
     opacity: 1;
     transition: 1.5s ease;
+    font-family: sans-serif !important; /* so we don't have to wait for fonts to load */
 
     /* CSS for loading animation */
     /* Modified from: https://github.com/tobiasahlin/SpinKit */
@@ -79,37 +82,20 @@ a:hover {
     animation: fadeOut 1.5s ease-out;
     animation-fill-mode: forwards;
 }
+
+/* Header -> title, current btc price, and base currency select */
+
 .header {
     padding-top: 18px;
     padding-bottom: 22px;
     margin-bottom: 24px;
     text-align: center;
     color: #fff;
-}
-.header {
+
     h1 {
         font-weight: 300;
         font-size: 50px;
         margin: 0;
-    }
-    .link {
-        display: inline-block;
-        margin-top: 14px;
-        background: rgba(0,0,0,0.04);
-        border-radius: 10px;
-        transition: 0.15s ease;
-    }
-    .link:hover {
-        background: rgba(0,0,0,0.12);
-        a {
-            opacity: 1;
-        }
-    }
-    .link:active {
-        background: rgba(0,0,0,0.04);
-        a {
-            opacity: 0.8;
-        }
     }
     a {
         display: block;
@@ -183,8 +169,10 @@ a:hover {
     }
 }
 
+/* Add new currency card and menu */
+
 .addNew {
-    height: 140px;
+    height: 191px;
     border: 2px solid rgba(255,255,255,0.8);
     border-radius: 15px;
     margin: 26px auto 0px auto;
@@ -199,7 +187,7 @@ a:hover {
     select {
         height: 100%;
         width: 100%;
-        padding: 0px 0px 0px 115px;
+        padding: 0px 0px 0px 128px;
         font-size: 18px;
         font-family: $font-stack;
         color: rgba(255,255,255,0.8);
@@ -241,7 +229,7 @@ a:hover {
         cursor: pointer;
 
         .lowerMe {
-            margin-top: 20px;
+            margin-top: 33px;
         }
     }
     #addNext:hover {
@@ -249,6 +237,8 @@ a:hover {
         background: rgba(0,0,0,0.12);
     }
 }
+
+/* Currency name box in the top left of each card */
 
 .pair-name-container {
     width: 200px;
@@ -291,9 +281,11 @@ a:hover {
         display: inline-block;
         font-size: 18px;
         margin-left: 4px;
-        /* font-family: 'Roboto Mono', monospace; */
     }
 }
+
+/* Currency card */
+
 .pair-box {
     margin-top: 26px;
     margin-left: 5%;
@@ -307,12 +299,10 @@ a:hover {
 
     .label {
         font-size: 14px;
-        /* font-family: 'Roboto Mono', monospace; */
         opacity: 0.8;
     }
     .price {
         font-size: 18px;
-        /* font-family: 'Roboto Mono', monospace; */
     }
     .top-data-container {
         width: 100%;
@@ -374,10 +364,53 @@ a:hover {
 }
 .col-lg-6 {
     margin-bottom: 85px;
-    /*min-width: 516px !important;
-    max-width: 516px !important;*/
 }
 
+/* Learn more link on bottom of page */
+
+.learn-more {
+    font-size: 18px;
+    border-radius: 10px;
+    padding: 10px 20px;
+    color: rgba(255,255,255,0.8);
+    margin: 0px auto 30px auto;
+    text-align: center;
+
+    a {
+        padding: 10px 20px 10px 20px;
+        border-radius: 10px;
+        background: rgba(0,0,0,0.06);
+        margin: auto;
+    }
+    a:hover {
+        background: rgba(0,0,0,0.12);
+    }
+}
+
+.updates {
+    font-size: 16px;
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+    margin-top: -15px;
+    margin-bottom: 20px;
+}
+@keyframes showPopUp {
+    0% {
+        opacity: 0;
+
+    }
+    1% {
+        opacity: 0;
+        visibility: visible;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+.showPopUp {
+    animation: showPopUp 1.5s ease-out;
+    animation-fill-mode: forwards;
+}
 /* Media Queries */
 
 @media only screen and (min-width: 48em) {

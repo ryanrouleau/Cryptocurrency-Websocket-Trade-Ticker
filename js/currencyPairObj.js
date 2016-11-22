@@ -1,23 +1,26 @@
-// The currencyPair object corresponds to each card in the page.
+// // // // // //
+// For each currency card on the page, there is a respective currencyPair
+// object.
+//
+// This object contains data to store general information about the
+// currency (e.g. full name -> 'Ethereum') and  trade data.
+//
+// It holds methods to create the html for the card and add it to the DOM on
+// initialization, to take in new ticker data and update the respective DOM
+// elements and trigger respective animations, to add or remove last trade prices
+// to the tab title, and to change the base currency from BTC to USD and vice-versa.
+// The currencyPair objects are created and kept track of in msgRouter.js
+// /// // // // //
 
-// It holds data about that currency (last prices, real name (e.g. Ethereum), DOM elements to update)
-
-// It holds methods to
-// 1) .init() -> create the HTML for the card and add it to the DOM on initialization
-// 2) .update(msg) -> handle JSON objects containing new ticker data for the respective instance of currencyPair sent from msgRouter
-// 3) .updateDOM(node, className, newText) -> update the respective DOM element with new ticker data and trigger respective animations
-// 4) .isId(pairId) -> returns true if the passed pairId matches the object's pairId (this.pairId) e.g. 'BTC_ETH'
-
-// to do
-//      in updateBaseCurrency() set all this.El to new currencyPair
-//      in msgrouter, when creating object, send the btcPrice
 
 function currencyPair(pairId) {
     // Currency pair e.g. 'BTC_ETH' of the instance of this object
     this.pairId = pairId;
+
     // Full name of currency, e.g. 'Ethereum' -> set in this.init();
     this.name = '';
 
+    // E.g. ETH if the pairId is BTC_ETH -> set in this.init();
     this.currencyCode = '';
 
     this.updateTitle = false;
@@ -44,6 +47,16 @@ function currencyPair(pairId) {
     this.changeEl;
 }
 
+
+// // // // // //
+// init()
+//
+// Takes data (ticker, and general) for all currencies, and the current BTC price
+// as arguments and grabs the relevant the data for it's instance
+// (defined by this.pairId) and stores it.
+// It also creates the initial HTML for the card and adds it to the DOM.
+// // // // // //
+
 currencyPair.prototype.init = function(initialData, currencyData, btcPrice) {
     this.btcPrice = btcPrice;
     // To get real name of currency e.g. Ethereum from BTC_ETH, we search the currencyData object
@@ -66,12 +79,12 @@ currencyPair.prototype.init = function(initialData, currencyData, btcPrice) {
 
     // saving initial market data
     var data = initialData[this.pairId];
-    this.lastTrade = data['last'];
-    this.lastAsk = data['lowestAsk'];
-    this.lastBid = data['highestBid'];
+    this.lastTrade = parseFloat(data['last']);
+    this.lastAsk = parseFloat(data['lowestAsk']);
+    this.lastBid = parseFloat(data['highestBid']);
     this.lastMid = ((parseFloat(this.lastBid)+parseFloat(this.lastAsk))/2);
-    this.lastVol = data['baseVolume'];
-    this.change = data['percentChange'];
+    this.lastVol = parseFloat(data['baseVolume']);
+    this.change = parseFloat(data['percentChange']);
 
     // Making the pairId from form 'BTC_XMR' to 'BTC - XMR'
     var prettyPairId = '';
@@ -86,7 +99,7 @@ currencyPair.prototype.init = function(initialData, currencyData, btcPrice) {
     }
     //console.log(this.name);
     // Creating & adding new currency pair HTML to DOM
-    var addToDom = '<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"><div class="pair-name-container"><div class="tradePop" id="tradePop'+this.pairId+'">New Trade!</div><div class="pair-name" id="pairId'+this.pairId+'">'+prettyPairId+'</div><div class="pair-subname" id="pairName'+this.pairId+'">'+this.name+'</div></div><div class="volume"><span class="opacity">24hr Vol:</span><div class="value" id="vol'+this.pairId+'"> '+parseFloat(this.lastVol).toFixed(2)+'</div></div><div class="pair-box"><div class="top-data-containter"><div class="top-data no-show"><div class="price">0.00019923</div><div class="label">Last Trade Price</div></div><div class="top-data percnt-chnge"><div class="price" id="prcnt'+this.pairId+'">'+(parseFloat(this.change)*100).toFixed(2)+'%</div><div class="label">24hr Change</div></div><div class="top-data last-trade"><div class="price" id="trade'+this.pairId+'">'+parseFloat(this.lastTrade).toFixed(8)+'</div><div class="label">Last Trade</div></div></div><div class="bottom-data-container"><div class="bidask ask"><div class="price" id="bid'+this.pairId+'">'+parseFloat(this.lastBid).toFixed(8)+'</div><div class="label">Highest Bid</div></div><div class="bidask mid"><div class="price" id="mid'+this.pairId+'">'+this.lastMid.toFixed(8)+'</div><div class="label">Mid - Market</div></div><div class="bidask bid"><div class="price" id="ask'+this.pairId+'">'+parseFloat(this.lastAsk).toFixed(8)+'</div><div class="label">Lowest Ask</div></div></div><div class="add-to-tab" id="tab'+this.pairId+'">Add '+this.name+' updates to tab title</div></div></div>';
+    var addToDom = '<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"><div class="pair-name-container"><div class="tradePop" id="tradePop'+this.pairId+'">New Trade!</div><div class="pair-name" id="pairId'+this.pairId+'">'+prettyPairId+'</div><div class="pair-subname" id="pairName'+this.pairId+'">'+this.name+'</div></div><div class="volume"><span class="opacity">24hr Vol:</span><div class="value" id="vol'+this.pairId+'"> '+this.lastVol.toFixed(2)+'</div></div><div class="pair-box"><div class="top-data-containter"><div class="top-data no-show"><div class="price">0.00019923</div><div class="label">Last Trade Price</div></div><div class="top-data percnt-chnge"><div class="price" id="prcnt'+this.pairId+'">'+(this.change*100).toFixed(2)+'%</div><div class="label">24hr Change</div></div><div class="top-data last-trade"><div class="price" id="trade'+this.pairId+'">'+this.lastTrade.toFixed(8)+'</div><div class="label">Last Trade</div></div></div><div class="bottom-data-container"><div class="bidask ask"><div class="price" id="bid'+this.pairId+'">'+this.lastBid.toFixed(8)+'</div><div class="label">Highest Bid</div></div><div class="bidask mid"><div class="price" id="mid'+this.pairId+'">'+this.lastMid.toFixed(8)+'</div><div class="label">Mid - Market</div></div><div class="bidask bid"><div class="price" id="ask'+this.pairId+'">'+this.lastAsk.toFixed(8)+'</div><div class="label">Lowest Ask</div></div></div><div class="add-to-tab" id="tab'+this.pairId+'">Add '+this.name+' updates to tab title</div></div></div>';
     document.getElementById('addNew').insertAdjacentHTML('beforebegin', addToDom);
 
     // We now store the element for later DOM updates
@@ -99,23 +112,47 @@ currencyPair.prototype.init = function(initialData, currencyData, btcPrice) {
     this.tradePopEl = document.getElementById('tradePop'+this.pairId);
 }
 
+
+// // // // // //
+// update(msg)
+//
+// Takes a JSON object sent from msgRouter.js and finds what data has changed
+// that triggered a new ticker message for the currency. It then updates the DOM
+// for the respective fields and stores the new data.
+//
+// Generally for each data item we keep track of:
+//      - last trade price, highest ask, lowest bid, mid market price,
+//        24hr volume, and 24hr percent change
+// we check if the last value we stored is different than the value in the passed
+// JSON object, and if it is, then we parse it to a float, determine if the value
+// has increased or decreased, then update the DOM and trigger the respective
+// green (good) or red (bad) animation
+// // // // // //
+
 currencyPair.prototype.update = function(msg) {
+    // Parsing and storing values of msg obj
+    var price = parseFloat(msg[1]);
+    var askFlt = parseFloat(msg[2]);
+    var bidFlt = parseFloat(msg[3]);
+    var vol = parseFloat(msg[5]);
+    var change = parseFloat(msg[4]);
+
     // Checking if new trade price
-    if (msg[1] != this.lastTrade) {
-        var price = parseFloat(msg[1]);
-        var tradeArrow;
+    if (price != this.lastTrade) {
+        var tradeArrow = '';
 
         if (price > this.lastTrade) {
-            this.tradeEl = this.updateDOM(this.tradeEl, 'triggerPositive', price, 8, '');
-            this.tradePopEl = this.updateDOM(this.tradePopEl, 'triggerTradePop', 'New Trade!', 0, '');
-            tradeArrow = '▴'
+            this.tradeEl = this.updateDOM(this.tradeEl, 'triggerPositive', price, -1, '');
+            this.tradePopEl = this.updateDOM(this.tradePopEl, 'triggerTradePop', 'New Trade!', -1, '');
+            tradeArrow = '▴';
         }
         else if (price < this.lastTrade) {
-            this.tradeEl = this.updateDOM(this.tradeEl, 'triggerNegative', price, 8, '');
-            this.tradePopEl = this.updateDOM(this.tradePopEl, 'triggerTradePop', 'New Trade!', 0, '');
-            tradeArrow = '▾'
+            this.tradeEl = this.updateDOM(this.tradeEl, 'triggerNegative', price, -1, '');
+            this.tradePopEl = this.updateDOM(this.tradePopEl, 'triggerTradePop', 'New Trade!', -1, '');
+            tradeArrow = '▾';
         }
-
+        // If the user has requested tab title updates for this currency, then
+        // we do that
         if (this.updateTitle) {
             if (this.baseCurrency === 'btc') {
                 document.title = this.currencyCode + ': ' + (price.toFixed(8)).toString() + ' ' + tradeArrow;
@@ -124,65 +161,59 @@ currencyPair.prototype.update = function(msg) {
                 document.title = this.currencyCode + ': $' + ((price*this.btcPrice).toFixed(4)).toString() + ' ' + tradeArrow;
             }
         }
-
         this.lastTrade = price;
     }
 
     // Chekcing if new ask price
-    if (msg[2] != this.lastAsk) {
-        var askFlt = parseFloat(msg[2]);
-        var bidFlt = parseFloat(msg[3]);
+    if (askFlt != this.lastAsk) {
         var midFlt = ((askFlt+bidFlt)/2);
 
         if (midFlt > this.lastMid) {
-            this.askEl = this.updateDOM(this.askEl, 'triggerPositive', askFlt, 8, '');
-            this.midEl = this.updateDOM(this.midEl, 'triggerPositive', midFlt, 8, '');
+            this.askEl = this.updateDOM(this.askEl, 'triggerPositive', askFlt, -1, '');
+            this.midEl = this.updateDOM(this.midEl, 'triggerPositive', midFlt, -1, '');
         }
         else if (midFlt < this.lastMid) {
-            this.askEl = this.updateDOM(this.askEl, 'triggerNegative', askFlt, 8, '');
-            this.midEl = this.updateDOM(this.midEl, 'triggerNegative', midFlt, 8, '');
+            this.askEl = this.updateDOM(this.askEl, 'triggerNegative', askFlt, -1, '');
+            this.midEl = this.updateDOM(this.midEl, 'triggerNegative', midFlt, -1, '');
         }
         this.lastMid = midFlt;
         this.lastAsk = askFlt;
     }
 
     // Checking if new bid price
-    if (msg[3] != this.lastBid) {
-        var askFlt = parseFloat(msg[2]);
-        var bidFlt = parseFloat(msg[3]);
+    if (bidFlt != this.lastBid) {
         var midFlt = ((askFlt+bidFlt)/2);
 
         if (midFlt > this.lastMid) {
-            console.log('mid ' + midFlt);
-            console.log('lastmid ' + this.lastMid);
-            this.bidEl = this.updateDOM(this.bidEl, 'triggerPositive', bidFlt, 8, '');
-            this.midEl = this.updateDOM(this.midEl, 'triggerPositive', midFlt, 8, '');
+            this.bidEl = this.updateDOM(this.bidEl, 'triggerPositive', bidFlt, -1, '');
+            this.midEl = this.updateDOM(this.midEl, 'triggerPositive', midFlt, -1, '');
         }
         else if (midFlt < this.lastMid) {
-            this.bidEl = this.updateDOM(this.bidEl, 'triggerNegative', bidFlt, 8, '');
-            this.midEl = this.updateDOM(this.midEl, 'triggerNegative', midFlt, 8, '');
+            this.bidEl = this.updateDOM(this.bidEl, 'triggerNegative', bidFlt, -1, '');
+            this.midEl = this.updateDOM(this.midEl, 'triggerNegative', midFlt, -1, '');
         }
         this.lastMid = midFlt;
         this.lastBid = bidFlt;
     }
 
     // Checking if volume has changed
-    if (msg[5] != this.lastVol) {
-        var vol = parseFloat(msg[5]);
+    if (vol != this.lastVol) {
+        var sigFigs = 2;
+        if (this.baseCurrency === 'usd') {
+            sigFigs = 0;
+        }
 
         if (vol > this.lastVol) {
-            this.volumeEl = this.updateDOM(this.volumeEl, 'triggerPositive', vol, 2, '');
+            this.volumeEl = this.updateDOM(this.volumeEl, 'triggerPositive', vol, sigFigs, '');
         }
         else if (vol < this.lastVol) {
-            this.volumeEl = this.updateDOM(this.volumeEl, 'triggerNegative', vol, 2, '');
+            this.volumeEl = this.updateDOM(this.volumeEl, 'triggerNegative', vol, sigFigs, '');
         }
         this.lastVol = vol;
     }
 
     // Checking if 24hr percent change has updated
-    if (msg[4] != this.change) {
-        var change = parseFloat(msg[4]);
-
+    if (change != this.change) {
         if (change > this.lastChange) {
             this.changeEl = this.updateDOM(this.changeEl, 'triggerPositive', (change*100), 2, '%');
         }
@@ -193,10 +224,28 @@ currencyPair.prototype.update = function(msg) {
     }
 }
 
-currencyPair.prototype.updateDOM = function(node, className, value, sigFigs, percentSign) {
+
+// // // // // //
+// updateDOM()
+//
+// Takes necessary arguments to determine what to and how to update an element
+// in the DOM corresponding to a data item (e.g. last trade price), updates
+// the text of that element with the new data and adds/removes classes to
+// trigger animations.
+// // // // // //
+
+currencyPair.prototype.updateDOM = function(node, className, value, overrideSigFigs, percentSign) {
     // To force reflow and restart the animation, we remove all animation classes,
     // clone the node, delete the original node, and replace it with the clone
-    // where we add the animation class we want triggered
+    // where we add the animation class we want triggered.
+    // If we just remove and add back the class, the browser won't reflow
+    // and the animation won't be triggered after the first time
+    //
+    // If overrideSigFigs = -1 then we assume default significant figures for
+    // respective base currency (8 for btc and 4 for usd), otherwise we use the
+    // value of overrideSigFigs
+
+    console.log('Updating DOM for: ');
     console.log(node);
     node.classList.remove('triggerNegative');
     node.classList.remove('triggerPositive');
@@ -206,25 +255,44 @@ currencyPair.prototype.updateDOM = function(node, className, value, sigFigs, per
     clone.classList.add(className);
     node.parentNode.replaceChild(clone, node);
 
+    var sigFigs = 8; // default # of significant figures for BTC base currency
+    if (overrideSigFigs === -1 && this.baseCurrency === 'usd') {
+        sigFigs = 4; // default # of significant figures for USD base currency
+    }
+    else if (overrideSigFigs !== -1) {
+        sigFigs = overrideSigFigs;
+    }
+
     var insertText = '';
     if (typeof value === 'string') {
         insertText = value;
+        // e.g. 'New Trade!'
     }
-    else if (this.baseCurrency === 'btc') {
+    else if (percentSign !== '') {
         insertText = value.toFixed(sigFigs).toString() + percentSign;
     }
-    else {
-        if (percentSign === '') {
-            insertText = '$' + (value*this.btcPrice).toFixed(4).toString();
-        }
-        else {
-            insertText = (value*this.btcPrice).toFixed(4).toString() + percentSign;
-        }
+    else if (this.baseCurrency === 'btc') {
+        insertText = value.toFixed(sigFigs).toString();
+        // e.g. 3.43% or 0.00946678
+    }
+    else if (this.baseCurrency === 'usd') {
+        insertText = '$' + (value*this.btcPrice).toFixed(sigFigs).toString();
+        // e.g. $3.409
     }
     clone.textContent = insertText;
 
     return clone;
 }
+
+
+// // // // // //
+// isId()
+//
+// Takes a pairId (e.g. BTC_ETH) and returns true if the current instance is the
+// the piarId passed. This used in msgRouter.js to determine where to send new
+// new messages and other methods where a specific currencyPair object needs
+// to be updated
+// // // // // //
 
 currencyPair.prototype.isId = function(Id) {
     // Checks if the object instance is the one we desire
@@ -233,6 +301,20 @@ currencyPair.prototype.isId = function(Id) {
     }
     return false;
 }
+
+
+// // // // // //
+// updatePageTitle()
+//
+// If the argument is true, then the method updates the page title with the last
+// trade price and sets this.updatePageTitle to true for updating the title
+// whenever a new trade price is found in the JSON object passed to update()
+//
+// If the arugment is false, then then method disables title updates for this
+// currency.
+//
+// It also updates the button in the card to show either 'Add' or 'Remove'
+// // // // // //
 
 currencyPair.prototype.updatePageTitle = function(update) {
     if (update) {
@@ -250,6 +332,14 @@ currencyPair.prototype.updatePageTitle = function(update) {
         document.getElementById('tab'+this.pairId).innerHTML = 'Add ' + this.name + ' updates to tab title';
     }
 }
+
+
+// // // // // //
+// updateBaseCurrency()
+//
+// Takes either 'btc' or 'usd' as the argument and updates the base currency
+// and respective DOM elements to that base currency for the instance
+// // // // // //
 
 currencyPair.prototype.updateBaseCurrency = function(currency) {
     this.baseCurrency = currency;

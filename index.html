@@ -2,16 +2,16 @@
 <html>
     <head>
         <title>The Crypto Ticker</title>
-        <script src="js/autobahn.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="js/currencyPairObj.js"></script>
-        <script src="js/msgRouter.js"></script>
-        <script src="js/engine.js"></script>
-        <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
         <link rel="stylesheet" href="css/style.css" />
         <link rel="stylesheet" href="css/flexboxgrid.min.css" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="UTF-8">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+        <link rel="manifest" href="/manifest.json">
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0bb634">
+        <meta name="theme-color" content="#0bb634">
     </head>
 
     <body>
@@ -19,7 +19,7 @@
             <div class="header">
                 <h1>The Crypto Ticker</h1>
                 <!-- Loading animation -->
-                <!-- Code from: https://github.com/tobiasahlin/SpinKit -->
+                <!-- Code modified from: https://github.com/tobiasahlin/SpinKit -->
                 <div class="spinner"></div>
 
                 <div id="loading-text">
@@ -69,10 +69,21 @@
                     </div>
                 </div>
             </div>
-            <div class="title">
-                <a href="#">Learn more about this project</a>
-            </div>
+        </div>
+
+        <div class="learn-more" id="learn-more">
+            <a href="#">Learn more about this project</a>
+        </div>
+        <div class="updates">
+            Currency updates received: <span id="num-received"></span>
+            <br />
+            Updates of tracked currencies: <span id="num-updates"></span>
         </div>
     </body>
-
+    <!-- Scripts -->
+    <script src="js/autobahn.js"></script>
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/currencyPairObj.js"></script>
+    <script src="js/msgRouter.js"></script>
+    <script src="js/engine.js"></script>
 </html>

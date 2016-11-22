@@ -16,12 +16,16 @@ var connection = new autobahn.Connection({
 });
 
 connection.onopen = function (session) {
-
-    // Callback function  run on the arrival of every websocket message
+    var numReceived = 0;
+    var numReceivedEl = document.getElementById('num-received');
+    
+    // Callback function run on the arrival of every websocket message
     function onevent(args) {
         // Passing the JSON message object to our router and updating respective currency pair
         console.log(args);
         router.updatePair(args);
+        numReceived++;
+        numReceivedEl.textContent = numReceived;
     }
     session.subscribe('ticker', onevent);
 };
@@ -39,7 +43,7 @@ function removeSplashScreen() {
     }, 700);
 }
 
-// UI interactions
+// jQuery UI interactions
 $(function () {
     // Add new currency handlers
     $('#selectMenu').bind('change', function() {
@@ -68,4 +72,18 @@ $(function () {
             $(this).siblings().removeClass('current');
         }
     });
+
+    // Learn more popup
+    $('#learn-more').click(function() {
+        $('#learn-more-popup').addClass('showPopUp');
+    });
 });
+
+function msgsReceived() {
+    this.num = 0;
+    this.updateEl = $('#num-received');
+}
+msgsReceived.prototype.update = function() {
+    this.num++;
+    this.updateEl.html(this.num);
+}
