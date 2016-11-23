@@ -22,10 +22,10 @@ connection.onopen = function (session) {
     // Callback function run on the arrival of every websocket message
     function onevent(args) {
         // Passing the JSON message object to our router and updating respective currency pair
-        console.log(args);
         router.updatePair(args);
         numReceived++;
         numReceivedEl.textContent = numReceived;
+        console.log(args);
     }
     session.subscribe('ticker', onevent);
 };
@@ -78,12 +78,3 @@ $(function () {
         $('#learn-more-popup').addClass('showPopUp');
     });
 });
-
-function msgsReceived() {
-    this.num = 0;
-    this.updateEl = $('#num-received');
-}
-msgsReceived.prototype.update = function() {
-    this.num++;
-    this.updateEl.html(this.num);
-}

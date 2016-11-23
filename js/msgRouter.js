@@ -42,7 +42,7 @@ var msgRouter = function() {
     this.numUpdatesEl.textContent = '0';
 
     // Disable splash screen
-    this.disableSplash = true;
+    this.disableSplash = false;
     if (this.disableSplash) {
         removeSplashScreen();
     }
