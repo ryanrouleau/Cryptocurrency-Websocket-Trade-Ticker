@@ -18,7 +18,7 @@ var connection = new autobahn.Connection({
 connection.onopen = function (session) {
     var numReceived = 0;
     var numReceivedEl = document.getElementById('num-received');
-    
+
     // Callback function run on the arrival of every websocket message
     function onevent(args) {
         // Passing the JSON message object to our router and updating respective currency pair

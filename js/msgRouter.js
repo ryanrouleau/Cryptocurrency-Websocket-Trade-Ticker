@@ -39,9 +39,10 @@ var msgRouter = function() {
     // Keeping track of # of currency updates
     this.numUpdates = 0;
     this.numUpdatesEl = document.getElementById('num-updates');
+    this.numUpdatesEl.textContent = '0';
 
     // Disable splash screen
-    this.disableSplash = false;
+    this.disableSplash = true;
     if (this.disableSplash) {
         removeSplashScreen();
     }
