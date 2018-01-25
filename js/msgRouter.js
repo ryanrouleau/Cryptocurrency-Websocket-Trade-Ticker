@@ -48,7 +48,6 @@ var msgRouter = function() {
     }
 }
 
-
 // // // // // //
 // initTickerData()
 //
@@ -62,6 +61,14 @@ msgRouter.prototype.initTickerData = function(initialData) {
     this.tickerReady = true;
     this.initialTickerData = initialData;
 
+    this.currencyPairIds = {};
+    const keys = Object.keys(initialData);
+    keys.forEach(currencyPair => {
+      const currency = initialData[currencyPair];
+      this.currencyPairIds[currency.id] = currencyPair;
+    });
+    console.log(this.currencyPairIds);
+    console.log(initialData);
     // Getting the current BTC-USD price to pass to our currencyPair objects
     // and updating the price under the page title in the dom
     this.btcPrice = parseFloat(this.initialTickerData['USDT_BTC'].last);
@@ -179,7 +186,8 @@ msgRouter.prototype.updatePair = function(msg) {
     // currencyPair object to update it and the DOM
     var found = false;
     var i = 0;
-    var pairId = msg[0];
+    var pairId = this.currencyPairIds[msg[0]];
+
     var length = this.activePairs.length;
     while (!found && i < length) {
         if (this.activePairs[i].isId(pairId)) {

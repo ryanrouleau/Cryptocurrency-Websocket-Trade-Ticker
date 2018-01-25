@@ -10,25 +10,24 @@ $.get("https://poloniex.com/public?command=returnCurrencies", function(data) {
 });
 
 // Creating new websocket connection with autobahn to poloniex crypto exchange api
-var connection = new autobahn.Connection({
-    url: 'wss://api.poloniex.com',
-    realm: 'realm1'
-});
+var connection = new WebSocket('wss://api2.poloniex.com');
 
 connection.onopen = function (session) {
-    var numReceived = 0;
-    var numReceivedEl = document.getElementById('num-received');
-
-    // Callback function run on the arrival of every websocket message
-    function onevent(args) {
-        // Passing the JSON message object to our router and updating respective currency pair
-        router.updatePair(args);
-        numReceived++;
-        numReceivedEl.textContent = numReceived;
-        console.log(args);
-    }
-    session.subscribe('ticker', onevent);
+    console.log('test');
+    connection.send(JSON.stringify({command: 'subscribe', channel: 1002}));
 };
+
+var numReceived = 0;
+var numReceivedEl = document.getElementById('num-received');
+connection.onmessage = function (e) {
+    //console.log('test2');
+    // Passing the JSON message object to our router and updating respective currency pair
+    const msg = JSON.parse(e.data);
+    console.log(msg[2]);
+    router.updatePair(msg[2]);
+    numReceived++;
+    numReceivedEl.textContent = numReceived;
+}
 
 connection.open();
 
